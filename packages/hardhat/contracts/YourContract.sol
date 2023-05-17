@@ -1,27 +1,18 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-// Useful for debugging. Remove when deploying to a live network.
-import "hardhat/console.sol";
-// Use openzeppelin to inherit battle-tested implementations (ERC20, ERC721, etc)
-// import "@openzeppelin/contracts/access/Ownable.sol";
-
-/**
- * A smart contract that allows changing a state variable of the contract and tracking the changes
- * It also allows the owner to withdraw the Ether in the contract
- * @author BuidlGuidl
- */
 contract YourContract {
 
     // State Variables
     address public immutable owner;
-    string public greeting = "Building Unstoppable Apps!!!";
-    bool public premium = false;
-    uint256 public totalCounter = 0;
-    mapping(address => uint) public userGreetingCounter;
+    uint public imageTotal = 0;
+    string[] public images;
+    uint public numberOfPlays = 0;
+    mapping(address => uint) public cooldown;
+    mapping (uint => PlayerCard) cardlist;
+    uint immutable COOLDOWN_TIME = 3;
 
-    // Events: a way to emit log statements from smart contract that can be listened to by external parties
-    event GreetingChange(address indexed greetingSetter, string newGreeting, bool premium, uint256 value);
+    event CardResult(address player, string[] imageURLs, bool isMatch);
 
     // Constructor: Called once on contract deployment
     // Check packages/hardhat/deploy/00_deploy_your_contract.ts
@@ -37,29 +28,57 @@ contract YourContract {
         _;
     }
 
-    /**
-     * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
-     *
-     * @param _newGreeting (string memory) - new greeting to save on the contract
-     */
-    function setGreeting(string memory _newGreeting) public payable {
-        // Print data to the hardhat chain console. Remove when deploying to a live network.
-        console.log("Setting new greeting '%s' from %s",  _newGreeting, msg.sender);
+    struct PlayerCard {
+        uint id;
+        mapping(string => uint) sameImageCount;
+    }
 
-        // Change state variables
-        greeting = _newGreeting;
-        totalCounter += 1;
-        userGreetingCounter[msg.sender] += 1;
+    function addImage(string memory _imageURL) external payable {
+        images.push(_imageURL);
+        imageTotal++;
+    }
 
-        // msg.value: built-in global variable that represents the amount of ether sent with the transaction
-        if (msg.value > 0) {
-            premium = true;
-        } else {
-            premium = false;
+    function playGame() external{
+        require(cooldown[msg.sender] < block.timestamp, "Try again later");
+        cooldown[msg.sender] = block.timestamp + COOLDOWN_TIME;
+
+        string[] memory imageURLs = fillScratchCard();
+        numberOfPlays += 1;
+
+        bool isWinner = checkForMatching(imageURLs);
+
+        emit CardResult(msg.sender, imageURLs, isWinner);
+    }
+
+    function fillScratchCard() internal view returns (string[] memory) {
+        string[] memory imageURLs = new string[](9);
+
+        for(uint i = 0; i < 9; i++){
+            uint _randomNumber = uint(keccak256(abi.encode(block.timestamp, block.difficulty, msg.sender, i))) % imageTotal;
+            imageURLs[i] = images[_randomNumber];
         }
 
-        // emit: keyword used to trigger an event
-        emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, 0);
+        return imageURLs;
+    }
+
+    function checkForMatching(string[] memory imageURLs) internal returns (bool) {
+        PlayerCard storage currentCard = cardlist[numberOfPlays];
+        currentCard.id = numberOfPlays;
+
+        for(uint i = 0; i < 9; i++){
+            currentCard.sameImageCount[imageURLs[i]] += 1;
+            if(currentCard.sameImageCount[imageURLs[i]] == 3) return true;
+        }
+
+        return false;
+    }
+
+    function getPrizePool() external view returns (uint) {
+        return address(this).balance;
+    }
+
+    function getAdvertisement() external view returns (string[] memory) {
+        return images;
     }
 
     /**
