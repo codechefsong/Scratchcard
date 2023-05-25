@@ -2,7 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
-import { BugAntIcon, SparklesIcon } from "@heroicons/react/24/outline";
 
 const Home: NextPage = () => {
   return (
@@ -25,11 +24,11 @@ const Home: NextPage = () => {
             Matches 3 to Win
           </p>
 
-          <center>
+          <div className="center">
             <Link href="/scratch-cards" passHref className=" py-2 px-4 mb-1 mt-3 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50">
               Play Scratch Card
             </Link>
-          </center>
+          </div>
         </div>
 
         

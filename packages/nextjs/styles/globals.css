@@ -77,3 +77,9 @@ canvas {
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

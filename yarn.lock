@@ -1838,6 +1838,7 @@ __metadata:
     react-dom: ^18.2.0
     react-fast-marquee: ^1.3.5
     react-hot-toast: ^2.4.0
+    react-p5: ^1.3.35
     tailwindcss: ^3.1.8
     typescript: ^4.9.5
     use-debounce: ^8.0.4
@@ -2482,6 +2483,13 @@ __metadata:
   version: 0.2.0
   resolution: "@types/nprogress@npm:0.2.0"
   checksum: 561384775008ae58111f038f8f9468b3de8987cd753feef9bf6d07af0e1343390d492a078bb08a7b53ac7370208e31e06ac069cb852c435d49f5fe218e9769c4
+  languageName: node
+  linkType: hard
+
+"@types/p5@npm:1.3.3":
+  version: 1.3.3
+  resolution: "@types/p5@npm:1.3.3"
+  checksum: abad4d101f2e83b94006a889efbc928777ba0c5d66ce740af4ec5d7b89db297b1a37389bfa08a465b6b67164667947efd9776d09238c68882756eb3b51f1d324
   languageName: node
   linkType: hard
 
@@ -10409,6 +10417,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"opencollective-postinstall@npm:2.0.2":
+  version: 2.0.2
+  resolution: "opencollective-postinstall@npm:2.0.2"
+  bin:
+    opencollective-postinstall: index.js
+  checksum: 4b6f333f1c863ef141abef16998daf45f891baf63765684f14b97884ca069fb0055decb59ade7800153190c099b559918c2adeb99f3db70bb0fd616220e8cc17
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.8.1":
   version: 0.8.3
   resolution: "optionator@npm:0.8.3"
@@ -10541,6 +10558,13 @@ __metadata:
   version: 2.2.0
   resolution: "p-try@npm:2.2.0"
   checksum: f8a8e9a7693659383f06aec604ad5ead237c7a261c18048a6e1b5b85a5f8a067e469aa24f5bc009b991ea3b058a87f5065ef4176793a200d4917349881216cae
+  languageName: node
+  linkType: hard
+
+"p5@npm:1.3.1":
+  version: 1.3.1
+  resolution: "p5@npm:1.3.1"
+  checksum: ca7b128b4ee34a6aa161d14f196eeb2aa2bfff071c3d045ebc2e73fafcac9dc6b4e7b1bdcd14e3d6b38fb090157e82674a9e10e9b931148b0108112c892d9dc6
   languageName: node
   linkType: hard
 
@@ -11182,6 +11206,20 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
+  languageName: node
+  linkType: hard
+
+"react-p5@npm:^1.3.35":
+  version: 1.3.35
+  resolution: "react-p5@npm:1.3.35"
+  dependencies:
+    "@types/p5": 1.3.3
+    opencollective-postinstall: 2.0.2
+    p5: 1.3.1
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-dom: ">= 17.0.1"
+  checksum: b597ea438c7b51f9f9fbbf2d1d9861e6293b7e8447c06190713c24added9ec38a4270194227a54df0aef22038e3d93e0c46f9c654f0015f7b6c9cb7154eb9872
   languageName: node
   linkType: hard
 

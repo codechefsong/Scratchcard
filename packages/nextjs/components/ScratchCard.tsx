@@ -1,15 +1,21 @@
 import React from 'react';
-import Sketch from "react-p5";
+import dynamic from 'next/dynamic';
 
-function ScratchCard({ image }) {
-  const setup = (p5, canvasParentRef) => {
+const Sketch = dynamic(() => import('react-p5'), { ssr: false });
+
+type TScratchCard = {
+  image: any
+}
+
+function ScratchCard({ image } : TScratchCard) {
+  const setup = (p5 : any, canvasParentRef : any) => {
     if (typeof window !== 'undefined') {
       p5.createCanvas(270, 180).parent(canvasParentRef);
     }
    
   };
 
-  const draw = (p5) => {
+  const draw = (p5: any) => {
     if (typeof window !== 'undefined') {
       p5.strokeWeight(50);
       if(p5.mouseIsPressed === true) {
@@ -21,9 +27,9 @@ function ScratchCard({ image }) {
   return (
     <div style={{ position: "relative" }}>
       <section className="scratch-card">
-        <center className="box">
+        <div className="center box">
           <img src={image} alt="Icon" />
-        </center>
+        </div>
       </section>
       <Sketch setup={setup} draw={draw} />
     </div>
