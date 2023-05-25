@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import type { NextPage } from "next";
 
@@ -18,7 +17,7 @@ const Home: NextPage = () => {
             <span className="block text-4xl font-bold">Digital Scratch Off</span>
           </h1>
 
-          <Image alt="Scratchcard" className="cursor-pointer" width={400} height={400} src="/assets/scratchcard.png" />
+          <img alt="Scratchcard" className="cursor-pointer" width={400} height={400} src="/assets/scratchcard.png" />
 
           <p className="text-center text-lg">
             Matches 3 to Win

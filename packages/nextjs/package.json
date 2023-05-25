@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "start": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "serve": "next start",
     "lint": "next lint",
     "format": "prettier --write . '!(node_module|.next|contracts)/**/*'",
@@ -22,6 +22,7 @@
     "daisyui": "^2.31.0",
     "ethers": "^5.0.0",
     "next": "^13.1.6",
+    "next-optimized-images": "^2.6.2",
     "nextjs-progressbar": "^0.0.16",
     "react": "^18.2.0",
     "react-blockies": "^1.4.1",
