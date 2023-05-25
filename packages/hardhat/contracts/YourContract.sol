@@ -10,7 +10,7 @@ contract YourContract {
     uint public numberOfPlays = 0;
     mapping(address => uint) public cooldown;
     mapping (uint => PlayerCard) cardlist;
-    uint immutable COOLDOWN_TIME = 3;
+    uint public reward = 0.01 ether;
 
     event CardResult(address player, string[] imageURLs, bool isMatch);
 
@@ -18,6 +18,16 @@ contract YourContract {
     // Check packages/hardhat/deploy/00_deploy_your_contract.ts
     constructor(address _owner) {
         owner = _owner;
+
+        addImage("https://images.unsplash.com/photo-1532680678473-a16f2cda8e43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAxfHxzaGFwZXxlbnwwfDB8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1551907234-4f794b152738?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjZ8fHNoYXBlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1602750600155-1970ac3ad999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjAwfHxzaGFwZXxlbnwwfDB8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1524168948265-8f79ad8d4e33?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c2hhcGV8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1503883391826-af91d7ce0533?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNoYXBlfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1509266044497-ed3d3ab3471e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzN8fHNoYXBlfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1473456229365-7a538630163b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fHNoYXBlfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1506463108611-88834e9f6169?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fHNoYXBlfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60");
+        addImage("https://images.unsplash.com/photo-1516476675914-0160447c7282?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzV8fHNoYXBlfGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60");
     }
 
     // Modifier: used to define a set of rules that must be met before or after a function is executed
@@ -33,19 +43,24 @@ contract YourContract {
         mapping(string => uint) sameImageCount;
     }
 
-    function addImage(string memory _imageURL) external payable {
+    function addImage(string memory _imageURL) public payable {
         images.push(_imageURL);
         imageTotal++;
     }
 
-    function playGame() external{
-        require(cooldown[msg.sender] < block.timestamp, "Try again later");
-        cooldown[msg.sender] = block.timestamp + COOLDOWN_TIME;
+    function playGame() external payable{
+        require(msg.value >= 0.001 ether, "Failed to send enough value");
+        require(address(this).balance >= reward, "Not enough reward");
 
         string[] memory imageURLs = fillScratchCard();
         numberOfPlays += 1;
 
         bool isWinner = checkForMatching(imageURLs);
+
+         if (isWinner ) {
+            (bool sent, ) = msg.sender.call{value: reward}("");
+            require(sent, "Failed to send Ether");
+        }
 
         emit CardResult(msg.sender, imageURLs, isWinner);
     }

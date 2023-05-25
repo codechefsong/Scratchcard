@@ -19,7 +19,8 @@ function ScratchCards() {
   
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "YourContract",
-    functionName: "playGame"
+    functionName: "playGame",
+    value: "0.001",
   });
 
   useScaffoldEventSubscriber({
@@ -36,10 +37,10 @@ function ScratchCards() {
 
   return (
     <div className="container mx-auto bg-slate-50" style={{ height: "90vh"}}>
-      <h1 className='text-3xl text-center mt-5'>Matches 3 images to win a piece of the prize pool</h1>
+      <h1 className='text-3xl text-center mt-5'>Matches 3 images to win a 0.01 ETH</h1>
       <div className='center'>
         {address && <button className='py-2 px-4 mb-1 mt-3 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50' onClick={writeAsync} disabled={isLoading}>
-          Play Scratch Card
+          Play (0.001 ETH)
         </button>}
       </div>
       
